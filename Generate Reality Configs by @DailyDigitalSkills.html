@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reality Config Generator Marzban</title>
+    <style>
+        /* استایل برای صفحه اصلی */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* انتساب استایل به فرم */
+        .form-container {
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        /* استایل برای فیلد متنی */
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+
+        /* استایل برای دکمه‌ها */
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* استایل برای دکمه کپی کردن */
+        #copyButton {
+            background-color: #28a745;
+        }
+
+        /* استایل برای فیلد متنی قابل کپی کردن */
+        #generatedSNI {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            margin-top: 10px;
+        }
+
+        /* استایل برای دکمه کانال یوتیوب */
+        #youtubeButton {
+            background-color: #ff0000;
+            text-decoration: none;
+            display: inline-block;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Reality Inbound Generator</h2>
+        <form id="sniForm">
+            <label for="sniInput">Enter SNI(s) (separated by Enter):</label>
+            <textarea id="sniInput" rows="5" cols="40"></textarea>
+            <br>
+            <button type="button" onclick="generateSNI()">Generate SNI</button>
+        </form>
+        <div>
+            <label for="generatedSNI">Generated Inbounds:</label>
+            <textarea id="generatedSNI" readonly></textarea>
+            <button id="copyButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+            <a id="youtubeButton" href="https://www.youtube.com/channel/UCDBnd7heT6Gz6QgqtxvtuEw/" target="_blank">Go to DailyDigitalSkills YouTube Channel</a>
+            <a id="youtubeButton" href="https://www.youtube.com/channel/UCDBnd7heT6Gz6QgqtxvtuEw/" target="_blank">تهیه شده توسط دیلی دیجیتال اسکیلز</a>
+        </div>
+    </div>
+
+    <script>
+        function generateSNI() {
+            const sniInput = document.getElementById('sniInput').value;
+            const sniList = sniInput.split('\n').filter(Boolean);
+            const generatedTextArray = [];
+            
+            sniList.forEach((sni) => {
+                const randomNumber = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
+                const generatedText = `{
+      "tag": "${sni}",
+      "listen": "0.0.0.0",
+      "port": ${randomNumber},
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "${sni}:443",
+          "xver": 0,
+          "serverNames": [
+            "${sni}"
+          ],
+          "privateKey": "MMX7m0Mj3faUstoEm5NBdegeXkHG6ZB78xzBv2n3ZUA",
+          "shortIds": [
+            "",
+            "6ba85179e30d4fc2"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },`;
+                generatedTextArray.push(generatedText);
+            });
+            
+            const generatedTextString = generatedTextArray.join('\n');
+            const generatedSNIField = document.getElementById('generatedSNI');
+            generatedSNIField.value = generatedTextString;
+        }
+
+        function copyToClipboard() {
+            const generatedSNIField = document.getElementById('generatedSNI');
+            generatedSNIField.select();
+            document.execCommand('copy');
+            alert('Copied to clipboard');
+        }
+    </script>
+</body>
+</html>
